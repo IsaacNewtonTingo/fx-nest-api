@@ -3,7 +3,7 @@ const { transporter } = require("../config/nodemailer");
 async function sendEmail(email, message, subject) {
   try {
     const mailOptions = {
-      from: `Custom Jerseys Kenya ${
+      from: `FX Nest Investors ${
         process.env.ENV == "DEV"
           ? process.env.DEV_MAIL_USERNAME
           : process.env.PROD_MAIL_USERNAME

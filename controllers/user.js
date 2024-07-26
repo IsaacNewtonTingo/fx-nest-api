@@ -155,6 +155,8 @@ exports.verifyCode = async (req, res) => {
       await existing.deleteOne();
 
       const token = await generateToken(newUser);
+      res.cookie("token", token, { httpOnly: true, secure: true });
+
       const userObject = {
         _id: newUser._id,
         firstName: newUser.firstName,
@@ -165,7 +167,6 @@ exports.verifyCode = async (req, res) => {
         profilePicture: newUser.profilePicture,
         roleID: newUser.roleID,
         locationName: newUser.locationName,
-        token: token,
       };
 
       res.json({
@@ -214,6 +215,8 @@ exports.login = async (req, res) => {
         }
       } else {
         const token = await generateToken(user);
+        res.cookie("token", token, { httpOnly: true, secure: true });
+
         const userObject = {
           _id: user._id,
           firstName: user.firstName,
@@ -224,7 +227,6 @@ exports.login = async (req, res) => {
           profilePicture: user.profilePicture,
           roleID: user.roleID,
           locationName: user.locationName,
-          token: token,
         };
 
         res.json({
@@ -311,6 +313,7 @@ exports.googleLogin = async (req, res) => {
       });
 
       const token = await generateToken(newUser);
+      res.cookie("token", token, { httpOnly: true, secure: true });
 
       const userObject = {
         _id: newUser._id,
@@ -322,7 +325,6 @@ exports.googleLogin = async (req, res) => {
         profilePicture: newUser.profilePicture,
         roleID: newUser.roleID,
         locationName: newUser.locationName,
-        token: token,
       };
 
       res.json({
@@ -341,29 +343,27 @@ exports.googleLogin = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
   try {
-    let { channel, status, limit = 20, page = 1 } = req.query;
-
-    const query = {};
-    if (channel) {
-      query.channel = channel;
-    }
-
-    if (status) {
-      query.status = status;
-    }
+    let { limit = 20, page = 0 } = req.query;
 
     const data = await User.find(
-      query,
-      "firstName lastName email phoneNumber createdAt subscribedToNewsletter privacy"
+      {},
+      "firstName lastName email phoneNumber createdAt accountBalance"
     )
       .skip(parseInt(limit) * parseInt(page))
       .limit(limit)
       .sort({ createdAt: -1 });
 
+    const total = await User.countDocuments();
+    const active = await User.countDocuments({ accountBalance: { $gte: 1 } });
+    const inactive = await User.countDocuments({ accountBalance: { $lte: 0 } });
     res.json({
       status: "Success",
       message: "Users retrieved successfully",
-      data,
+      data: {
+        total,
+        active,
+        inactive,
+      },
     });
   } catch (error) {
     res.json({
@@ -437,6 +437,8 @@ exports.resetPassword = async (req, res) => {
         await existing.deleteOne();
 
         const token = await generateToken(newUser);
+        res.cookie("token", token, { httpOnly: true, secure: true });
+
         const userObject = {
           _id: newUser._id,
           firstName: newUser.firstName,
@@ -447,7 +449,6 @@ exports.resetPassword = async (req, res) => {
           profilePicture: newUser.profilePicture,
           roleID: newUser.roleID,
           locationName: newUser.locationName,
-          token: token,
         };
 
         res.json({

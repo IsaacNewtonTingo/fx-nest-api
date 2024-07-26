@@ -125,6 +125,10 @@ const UserSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    accountBalance: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
