@@ -8,6 +8,7 @@ const {
   forgotPassword,
   resetPassword,
   updateUser,
+  getUser,
 } = require("../controllers/user");
 const jwt = require("../middlewares/jwt");
 const { checkAdmin } = require("../middlewares/check-admin");
@@ -21,6 +22,7 @@ router.post("/auth/google-login", googleLogin);
 router.post("/auth/forgot-password", forgotPassword);
 router.post("/auth/reset-password", resetPassword);
 
+router.get("/:id", jwt, getUser);
 router.get("/", jwt, getUsers);
 router.put("/", jwt, checkAdmin, updateUser);
 

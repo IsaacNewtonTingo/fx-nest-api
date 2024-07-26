@@ -167,6 +167,7 @@ exports.verifyCode = async (req, res) => {
         profilePicture: newUser.profilePicture,
         roleID: newUser.roleID,
         locationName: newUser.locationName,
+        accountBalance: user.accountBalance,
       };
 
       res.json({
@@ -226,7 +227,7 @@ exports.login = async (req, res) => {
           phoneNumber: user.phoneNumber,
           profilePicture: user.profilePicture,
           roleID: user.roleID,
-          locationName: user.locationName,
+          accountBalance: user.accountBalance,
         };
 
         res.json({
@@ -324,7 +325,7 @@ exports.googleLogin = async (req, res) => {
         phoneNumber: newUser.phoneNumber,
         profilePicture: newUser.profilePicture,
         roleID: newUser.roleID,
-        locationName: newUser.locationName,
+        accountBalance: user.accountBalance,
       };
 
       res.json({
@@ -337,6 +338,28 @@ exports.googleLogin = async (req, res) => {
     res.json({
       status: "Failed",
       message: "An error occured while logging in with google",
+    });
+  }
+};
+
+exports.getUser = async (req, res) => {
+  try {
+    let userID = req.params.id;
+
+    const data = await User.findOne(
+      { _id: userID },
+      "firstName lastName email username phoneNumber createdAt profilePicture roleID accountBalance"
+    );
+
+    res.json({
+      status: "Success",
+      message: "User retrieved successfully",
+      data,
+    });
+  } catch (error) {
+    res.json({
+      status: "Failed",
+      message: "An error occured while getting user",
     });
   }
 };
@@ -449,7 +472,7 @@ exports.resetPassword = async (req, res) => {
           phoneNumber: newUser.phoneNumber,
           profilePicture: newUser.profilePicture,
           roleID: newUser.roleID,
-          locationName: newUser.locationName,
+          accountBalance: user.accountBalance,
         };
 
         res.json({
