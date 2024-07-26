@@ -7,8 +7,10 @@ const {
   login,
   forgotPassword,
   resetPassword,
+  updateUser,
 } = require("../controllers/user");
 const jwt = require("../middlewares/jwt");
+const { checkAdmin } = require("../middlewares/check-admin");
 
 const router = express.Router();
 
@@ -20,5 +22,6 @@ router.post("/auth/forgot-password", forgotPassword);
 router.post("/auth/reset-password", resetPassword);
 
 router.get("/", jwt, getUsers);
+router.put("/", jwt, checkAdmin, updateUser);
 
 module.exports = router;

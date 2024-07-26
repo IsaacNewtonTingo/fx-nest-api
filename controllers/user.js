@@ -360,6 +360,7 @@ exports.getUsers = async (req, res) => {
       status: "Success",
       message: "Users retrieved successfully",
       data: {
+        data,
         total,
         active,
         inactive,
@@ -467,6 +468,28 @@ exports.resetPassword = async (req, res) => {
     res.json({
       status: "Failed",
       message: "An error occured while reseting password",
+    });
+  }
+};
+
+exports.updateUser = async (req, res) => {
+  try {
+    const { balance, userID, clientID } = req.body;
+    const data = await User.findOneAndUpdate(
+      { _id: clientID },
+      { accountBalance: balance },
+      { new: true }
+    );
+
+    res.json({
+      status: "Success",
+      message: "User updated successfully",
+      data,
+    });
+  } catch (error) {
+    res.json({
+      status: "Failed",
+      message: "An error occured while updating balance",
     });
   }
 };
