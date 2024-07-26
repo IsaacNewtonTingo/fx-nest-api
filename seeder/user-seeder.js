@@ -17,7 +17,7 @@ mongoose
   });
 
 const seedDB = async () => {
-  const password = "@Icui4cu1998";
+  const password = "12345678@";
   const encryptedPassword = await bcrypt.hash(password, 0);
   const privacy = [
     {
@@ -38,22 +38,24 @@ const seedDB = async () => {
     },
   ];
 
-  // await User.deleteMany({});
+  await User.deleteMany({});
 
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 566; i++) {
     await User.create({
-      firstName: "Isaac",
-      lastName: "Tingo",
-      email: "newtontingo@gmail.com",
-      username: "isaactingo",
-      profilePicture: faker.image.avatar(),
-      phoneNumber: "254724753175",
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
+      email: faker.internet.email(),
+      username: faker.internet.userName(),
       password: encryptedPassword,
       privacy,
-      channel: "customJerseysWeb",
-      subscribedToNewsletter: true,
-      roleID: "superAdmin",
+      accountBalance: faker.number.float({
+        min: 0,
+        max: 1893,
+        multipleOf: 0.02,
+      }),
     });
+
+    console.log("User created");
   }
 };
 seedDB().then(() => {
