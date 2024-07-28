@@ -82,13 +82,38 @@ exports.fund = async (req, res) => {
 
 exports.getTransactions = async (req, res) => {
   try {
-    const userID = req.params.id;
-    const data = await Transaction.find({ user: userID });
+    const { userID, limit = 20, page = 0, type } = req.query;
+
+    let query = {};
+    if (type) {
+      query.type = type;
+    }
+    if (userID) {
+      query.user = userID;
+    }
+
+    const data = await Transaction.find(query)
+      .skip(parseInt(limit) * parseInt(page))
+      .limit(limit)
+      .sort({ createdAt: -1 });
+
+    const result = await Transaction.aggregate([
+      { $match: query },
+      { $group: { _id: null, totalAmount: { $sum: "$amount" } } },
+    ]);
+
+    const total = result.length > 0 ? result[0].totalAmount : 0;
+
+    const count = await Transaction.countDocuments();
 
     res.json({
       status: "Success",
       message: "Transactions retrieved successfully",
-      data,
+      data: {
+        total,
+        data,
+        count,
+      },
     });
   } catch (error) {
     res.json({

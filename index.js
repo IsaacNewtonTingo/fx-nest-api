@@ -40,7 +40,9 @@ app.get("/", (req, res) => {
 const UserRouter = require("./routes/user");
 const ContactUsRouter = require("./routes/contact-us");
 const FileUploadRouter = require("./routes/file-upload");
+const TransactionsRouter = require("./routes/transaction");
 
 app.use("/api/user", UserRouter);
 app.use("/api/contact-us", ContactUsRouter);
 app.use("/api/file-upload", FileUploadRouter);
+app.use("/api/transactions", TransactionsRouter);

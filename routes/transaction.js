@@ -4,6 +4,6 @@ const { getTransactions } = require("../controllers/transaction");
 
 const router = express.Router();
 
-router.get("/:id", jwt, getTransactions);
+router.get("/", jwt, getTransactions);
 
 module.exports = router;
