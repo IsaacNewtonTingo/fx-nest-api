@@ -22,7 +22,9 @@ const seedDB = async () => {
   const userIDs = existingUsers.map((user) => user._id);
   const types = ["deposit", "withdrawal"];
 
-  for (let i = 0; i < 100000; i++) {
+  await Transaction.deleteMany({});
+
+  for (let i = 0; i < 10; i++) {
     const randomUserID = userIDs[Math.floor(Math.random() * userIDs.length)];
     const randomType = types[Math.floor(Math.random() * types.length)];
 

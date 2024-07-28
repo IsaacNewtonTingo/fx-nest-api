@@ -83,14 +83,14 @@ exports.fund = async (req, res) => {
 
 exports.getTransactions = async (req, res) => {
   try {
-    const { userID, limit = 20, page = 0, type } = req.query;
+    const { user, limit = 20, page = 0, type } = req.query;
 
     let query = {};
     if (type) {
       query.type = type;
     }
-    if (userID) {
-      query.user = userID;
+    if (user) {
+      query.user = user;
     }
 
     const data = await Transaction.find(query)
