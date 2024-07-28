@@ -41,8 +41,10 @@ const UserRouter = require("./routes/user");
 const ContactUsRouter = require("./routes/contact-us");
 const FileUploadRouter = require("./routes/file-upload");
 const TransactionsRouter = require("./routes/transaction");
+const PlanRouter = require("./routes/plan");
 
 app.use("/api/user", UserRouter);
 app.use("/api/contact-us", ContactUsRouter);
 app.use("/api/file-upload", FileUploadRouter);
 app.use("/api/transactions", TransactionsRouter);
+app.use("/api/plan", PlanRouter);
