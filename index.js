@@ -12,6 +12,8 @@ const server = http.createServer(app);
 const corsOptions = {
   origin: [
     "http://localhost:3000",
+    "http://smartcashinv.com",
+    "http://www.smartcashinv.com",
     "https://smartcashinv.com",
     "https://www.smartcashinv.com",
   ],
