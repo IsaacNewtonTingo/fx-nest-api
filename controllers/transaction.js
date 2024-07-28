@@ -1,3 +1,4 @@
+const { Transaction } = require("../models/transaction");
 const { User } = require("../models/user");
 
 exports.withdraw = async (req, res) => {
@@ -57,6 +58,42 @@ exports.withdraw = async (req, res) => {
     res.json({
       status: "Failed",
       message: "An error occured while withdrawing",
+    });
+  }
+};
+
+exports.fund = async (req, res) => {
+  try {
+    const { type, amount, userID } = req.body;
+    const response = await Transaction.create({
+      user: userID,
+      type,
+      amount,
+    });
+
+    ``;
+  } catch (error) {
+    res.json({
+      status: "Failed",
+      message: "An error occured while funcding account",
+    });
+  }
+};
+
+exports.getTransactions = async (req, res) => {
+  try {
+    const userID = req.params.id;
+    const data = await Transaction.find({ user: userID });
+
+    res.json({
+      status: "Success",
+      message: "Transactions retrieved successfully",
+      data,
+    });
+  } catch (error) {
+    res.json({
+      status: "Failed",
+      message: "An error occured while getting transactions",
     });
   }
 };

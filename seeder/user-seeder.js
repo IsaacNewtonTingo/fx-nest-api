@@ -40,7 +40,7 @@ const seedDB = async () => {
 
   await User.deleteMany({});
 
-  for (let i = 0; i < 566; i++) {
+  for (let i = 0; i < 16; i++) {
     await User.create({
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
