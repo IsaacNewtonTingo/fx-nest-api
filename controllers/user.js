@@ -167,7 +167,7 @@ exports.verifyCode = async (req, res) => {
         profilePicture: newUser.profilePicture,
         roleID: newUser.roleID,
         locationName: newUser.locationName,
-        accountBalance: user.accountBalance,
+        accountBalance: newUser.accountBalance,
       };
 
       res.json({

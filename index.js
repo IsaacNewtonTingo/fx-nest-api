@@ -12,8 +12,10 @@ const server = http.createServer(app);
 const corsOptions = {
   origin: [
     "http://localhost:3000",
+
     "http://smartcashinv.com",
     "http://www.smartcashinv.com",
+
     "https://smartcashinv.com",
     "https://www.smartcashinv.com",
   ],
@@ -40,7 +42,7 @@ dbConnection().then(() => {
 app.use("/public", express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-  res.send("FX NEST APIS ARE WORKING PERFECTLY");
+  res.send("SMART CASH INVESTORS APIS ARE WORKING PERFECTLY");
 });
 
 const UserRouter = require("./routes/user");
