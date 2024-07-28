@@ -96,7 +96,11 @@ exports.getTransactions = async (req, res) => {
     const data = await Transaction.find(query)
       .skip(parseInt(limit) * parseInt(page))
       .limit(limit)
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "user",
+        select: "firstName lastName email phoneNumber",
+      });
 
     const result = await Transaction.aggregate([
       { $match: query },
@@ -196,12 +200,12 @@ exports.getAdminTransactions = async (req, res) => {
 
     //------------------------------------------
     let depQuery = {};
-    withQuery.type = "withdrawal";
+    depQuery.type = "deposit";
     const depRes = await Transaction.aggregate([
       { $match: depQuery },
       { $group: { _id: null, totalAmount: { $sum: "$amount" } } },
     ]);
-    const depositAmount = withRes.length > 0 ? depRes[0].totalAmount : 0;
+    const depositAmount = depRes.length > 0 ? depRes[0].totalAmount : 0;
 
     //------------------------------------------
     let userQuery = {};
