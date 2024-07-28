@@ -1,3 +1,4 @@
+const { ContactManager } = require("../models/contact-manager");
 const { Transaction } = require("../models/transaction");
 const { User } = require("../models/user");
 
@@ -105,6 +106,10 @@ exports.getTransactions = async (req, res) => {
     const total = result.length > 0 ? result[0].totalAmount : 0;
 
     const count = await Transaction.countDocuments();
+    const withdrawals = await Transaction.countDocuments({
+      type: "withdrawal",
+    });
+    const deposits = await Transaction.countDocuments({ type: "deposit" });
 
     res.json({
       status: "Success",
@@ -113,12 +118,35 @@ exports.getTransactions = async (req, res) => {
         total,
         data,
         count,
+        withdrawals,
+        deposits,
       },
     });
   } catch (error) {
     res.json({
       status: "Failed",
       message: "An error occured while getting transactions",
+    });
+  }
+};
+
+exports.contactManager = async (req, res) => {
+  try {
+    const { userID, amount } = req.body;
+    const data = await ContactManager.create({
+      user: userID,
+      amount,
+    });
+
+    res.json({
+      status: "Success",
+      message: "Request submitted successfully",
+      data,
+    });
+  } catch (error) {
+    res.json({
+      status: "Failed",
+      message: "An error occured while funcding account",
     });
   }
 };
