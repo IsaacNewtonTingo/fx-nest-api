@@ -150,3 +150,90 @@ exports.contactManager = async (req, res) => {
     });
   }
 };
+
+exports.getAdminTransactions = async (req, res) => {
+  try {
+    const { userID, limit = 20, page = 0, type } = req.query;
+
+    let query = {};
+    if (type) {
+      query.type = type;
+    }
+    if (userID) {
+      query.user = userID;
+    }
+
+    const data = await Transaction.find(query)
+      .skip(parseInt(limit) * parseInt(page))
+      .limit(limit)
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "user",
+        select: "firstName lastName email phoneNumber",
+      });
+
+    const result = await Transaction.aggregate([
+      { $match: query },
+      { $group: { _id: null, totalAmount: { $sum: "$amount" } } },
+    ]);
+
+    const total = result.length > 0 ? result[0].totalAmount : 0;
+
+    const count = await Transaction.countDocuments();
+    const withdrawalCount = await Transaction.countDocuments({
+      type: "withdrawal",
+    });
+    const depositCount = await Transaction.countDocuments({ type: "deposit" });
+
+    //------------------------------------------
+    let withQuery = {};
+    withQuery.type = "withdrawal";
+    const withRes = await Transaction.aggregate([
+      { $match: withQuery },
+      { $group: { _id: null, totalAmount: { $sum: "$amount" } } },
+    ]);
+    const withdrawalAmount = withRes.length > 0 ? withRes[0].totalAmount : 0;
+
+    //------------------------------------------
+    let depQuery = {};
+    withQuery.type = "withdrawal";
+    const depRes = await Transaction.aggregate([
+      { $match: depQuery },
+      { $group: { _id: null, totalAmount: { $sum: "$amount" } } },
+    ]);
+    const depositAmount = withRes.length > 0 ? depRes[0].totalAmount : 0;
+
+    //------------------------------------------
+    let userQuery = {};
+    const userRes = await User.aggregate([
+      { $match: userQuery },
+      { $group: { _id: null, totalAmount: { $sum: "$accountBalance" } } },
+    ]);
+    const balance = withRes.length > 0 ? userRes[0].totalAmount : 0;
+
+    res.json({
+      status: "Success",
+      message: "Transactions retrieved successfully",
+      data: {
+        balance,
+        total,
+        data,
+        count,
+        withdrawals: {
+          count: withdrawalCount,
+          amount: withdrawalAmount,
+        },
+        deposits: {
+          count: depositCount,
+          amount: depositAmount,
+        },
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      status: "Failed",
+      message: "An error occured while getting transactions",
+    });
+  }
+};
