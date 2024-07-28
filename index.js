@@ -10,7 +10,11 @@ const app = express();
 const server = http.createServer(app);
 
 const corsOptions = {
-  origin: ["http://localhost:3000"],
+  origin: [
+    "http://localhost:3000",
+    "https://smartcashinv.com",
+    "https://www.smartcashinv.com",
+  ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,

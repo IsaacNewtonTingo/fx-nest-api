@@ -109,11 +109,9 @@ exports.getTransactions = async (req, res) => {
 
     const total = result.length > 0 ? result[0].totalAmount : 0;
 
-    const count = await Transaction.countDocuments();
-    const withdrawals = await Transaction.countDocuments({
-      type: "withdrawal",
-    });
-    const deposits = await Transaction.countDocuments({ type: "deposit" });
+    const count = await Transaction.countDocuments(query);
+    const withdrawals = await Transaction.countDocuments(query);
+    const deposits = await Transaction.countDocuments(query);
 
     res.json({
       status: "Success",
