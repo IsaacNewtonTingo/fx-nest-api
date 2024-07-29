@@ -18,6 +18,13 @@ const corsOptions = {
 
     "https://smartcashinv.com",
     "https://www.smartcashinv.com",
+
+    "https://firstcoltd.com",
+    "https://www.firstcoltd.com",
+
+    "http://firstcoltd.com",
+    "http://www.firstcoltd.com",
+
   ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
