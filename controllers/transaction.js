@@ -239,3 +239,37 @@ exports.getAdminTransactions = async (req, res) => {
     });
   }
 };
+
+exports.withdraw = async (req, res) => {
+  try {
+    const { amount, userID } = req.body;
+    const user = await User.findOne({ _id: userID });
+    const balance = user.accountBalance;
+
+    if (balance > amount) {
+      await Transaction.create({
+        user: userID,
+        type: "withdrawal",
+        amount,
+      });
+
+      const newBalance = balance - amount;
+      await user.updateOne({ accountBalance: newBalance });
+
+      res.json({
+        status: "Success",
+        message: "Withdrawal request sent",
+      });
+    } else {
+      res.json({
+        status: "Failed",
+        message: "Insufficient funds",
+      });
+    }
+  } catch (error) {
+    res.json({
+      status: "Failed",
+      message: "An error occured while withdrawing",
+    });
+  }
+};
