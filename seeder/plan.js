@@ -20,54 +20,34 @@ mongoose
 const seedDB = async () => {
   const packages = [
     {
-      name: "Premium",
-      amount: 10000,
-      time: "6 Hours",
-      benefits: [
-        "Min. Possible deposit: $300",
-        "Max. Possible deposit: $9999",
-        "Minimum return 500%",
-        "Maximum return 5000%",
-        "$60 Gift Bonus",
-      ],
-    },
-    {
-      name: "Advanced (Recommended)",
-      amount: 5000,
-      time: "12 Hours",
-      benefits: [
-        "Min. Possible deposit: $100",
-        "Max. Possible deposit: $4999",
-        "Minimum return 50%",
-        "Maximum return 1000%",
-        "$42 Gift Bonus",
-      ],
-    },
-    {
-      name: "Standard",
-      amount: 1000,
-      time: "2 Days",
-      benefits: [
-        "Min. Possible deposit: $70",
-        "Max. Possible deposit: $999",
-        "Minimum return 12.5%",
-        "Maximum return 600%",
-        "$24 Gift Bonus",
-      ],
-    },
-    {
-      name: "Starter",
+      name: "2 INVESTMENT PLAN",
       amount: 100,
-      time: "90 Days",
+      time: "2 Hours",
       benefits: [
-        "Min. Possible deposit: $10",
-        "Max. Possible deposit: $99",
-        "Minimum return 5%",
-        "Maximum return 98%",
-        "$6 Gift Bonus",
+        "Invest $100 Earn $300 (Minimum)",
+        "Invest $250 Earn $750",
+        "Invest $300 Earn $900",
+        "Invest $400 Earn $1,200",
+        "Invest $500 Earn $1,500",
+        "Invest $1,000 Earn $3,000",
+        "Invest $2,000 Earn $6,000",
       ],
     },
+    {
+      name: "24 HOUR INVESTMENT PLAN",
+      amount: 1000,
+      time: "24 Hours",
+      benefits: [
+        "Invest $1,000 Earn $10.000 (Minimum)",
+        "Invest $2,000 Earn $20,000",
+        "Invest $3,000 Earn $30,000",
+        "Invest $4,000 Earn $40,000",
+        "Invest $5,000 Earn $50,000",
+      ],
+    },
+
   ];
+  await Plan.deleteMany({})
   await Plan.insertMany(packages);
   console.log("Added");
 };
