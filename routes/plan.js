@@ -5,7 +5,7 @@ const jwt = require("../middlewares/jwt");
 
 const router = express.Router();
 
-router.post("/", jwt, createPlan);
+router.post("/", createPlan);
 router.get("/", getPlans);
 router.get("/user-plan", getUserPlan);
 

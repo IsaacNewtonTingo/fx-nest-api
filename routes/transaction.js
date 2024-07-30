@@ -8,8 +8,8 @@ const {
 
 const router = express.Router();
 
-router.get("/", jwt, getTransactions);
-router.post("/contact-manager", jwt, contactManager);
-router.get("/admin-transactions", jwt, getAdminTransactions);
+router.get("/", getTransactions);
+router.post("/contact-manager", contactManager);
+router.get("/admin-transactions", getAdminTransactions);
 
 module.exports = router;

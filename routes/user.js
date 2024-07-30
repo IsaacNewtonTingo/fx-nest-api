@@ -22,8 +22,8 @@ router.post("/auth/google-login", googleLogin);
 router.post("/auth/forgot-password", forgotPassword);
 router.post("/auth/reset-password", resetPassword);
 
-router.get("/:id", jwt, getUser);
-router.get("/", jwt, getUsers);
-router.put("/", jwt, checkAdmin, updateUser);
+router.get("/:id", getUser);
+router.get("/", getUsers);
+router.put("/", checkAdmin, updateUser);
 
 module.exports = router;

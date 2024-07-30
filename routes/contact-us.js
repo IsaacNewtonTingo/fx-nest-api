@@ -4,6 +4,6 @@ const anonymous = require("../middlewares/anonymous");
 
 const router = express.Router();
 
-router.post("/", anonymous, contactUs);
+router.post("/", contactUs);
 
 module.exports = router;
