@@ -193,11 +193,16 @@ exports.withdraw = async (req, res) => {
       });
 
       const newBalance = balance - amount;
-      await user.updateOne({ accountBalance: newBalance });
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: userID },
+        { accountBalance: newBalance },
+        { new: true }
+      );
 
       res.json({
         status: "Success",
         message: "Withdrawal request sent",
+        data: updatedUser,
       });
     } else {
       res.json({
@@ -206,9 +211,10 @@ exports.withdraw = async (req, res) => {
       });
     }
   } catch (error) {
+    console.log(error);
     res.json({
       status: "Failed",
-      message: "An error occured while withdrawing",
+      message: "An error occurred while withdrawing",
     });
   }
 };

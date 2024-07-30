@@ -510,6 +510,7 @@ exports.updateUser = async (req, res) => {
       data,
     });
   } catch (error) {
+    console.log(error);
     res.json({
       status: "Failed",
       message: "An error occured while updating balance",
