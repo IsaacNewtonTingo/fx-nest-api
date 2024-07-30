@@ -8,7 +8,7 @@ require("dotenv").config();
 mongoose.set("strictQuery", false);
 
 mongoose
-  .connect(process.env.FIRSTCOLTD_MONGO_URI)
+  .connect(process.env.SARTCASH_MONGO_URI)
   .then(() => {
     console.log("DB connected");
   })

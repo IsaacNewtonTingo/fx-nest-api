@@ -9,7 +9,7 @@ require("dotenv").config();
 mongoose.set("strictQuery", false);
 
 mongoose
-  .connect(process.env.FIRSTCOLTD_MONGO_URI)
+  .connect(process.env.SARTCASH_MONGO_URI)
   .then(() => {
     console.log("DB connected");
   })
@@ -45,9 +45,8 @@ const seedDB = async () => {
         "Invest $5,000 Earn $50,000",
       ],
     },
-
   ];
-  await Plan.deleteMany({})
+  await Plan.deleteMany({});
   await Plan.insertMany(packages);
   console.log("Added");
 };
